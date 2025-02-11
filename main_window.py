@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from data import Data
 
 # Window settings
@@ -77,7 +78,13 @@ class MainWindow:
         passwd = self.password_entry.get()
 
         if not (website and email and passwd):
-            print("Empty entries")
+            messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty")
+            return
+
+        message = f"These are the details entered: \nEmail: {email}\nPassword: {passwd}\nSave?"
+        is_ok = messagebox.askokcancel(title=website, message=message)
+
+        if not is_ok:
             return
 
         self.website_entry.delete(0, tk.END)
