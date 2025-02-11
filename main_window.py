@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
+import pyperclip
 from data import Data
+from password_generator import generate_password
 
 # Window settings
 W_TITLE = "Password Manager"
@@ -57,7 +59,7 @@ class MainWindow:
         self.email_entry.insert(0, E_EMAIL_DEFAULT_TEXT)
         self.password_entry = tk.Entry(width=E_PASSWD_WIDTH)
 
-        self.gen_passwd_btn = tk.Button(text=B_GEN_PASSWD_TEXT, font=B_FONT)
+        self.gen_passwd_btn = tk.Button(text=B_GEN_PASSWD_TEXT, font=B_FONT, command=self.gen_passwd_btn_clicked)
         self.add_btn = tk.Button(text=B_ADD, width=B_ADD_WIDTH, font=B_FONT, command=self.add_btn_clicked)
 
         self.canvas.grid(row=0, column=1, padx=G_PADX, pady=G_PADY)
@@ -91,3 +93,9 @@ class MainWindow:
         self.password_entry.delete(0, tk.END)
         self.data.add_data(website, email, passwd)
         self.data.write_in_file()
+
+    def gen_passwd_btn_clicked(self):
+        self.password_entry.delete(0, tk.END)
+        passwd = generate_password()
+        self.password_entry.insert(0, passwd)
+        pyperclip.copy(passwd)
