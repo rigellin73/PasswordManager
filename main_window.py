@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import pyperclip
-from data import Data
+from data import write_data_in_file
 from password_generator import generate_password
 
 # Window settings
@@ -72,8 +72,6 @@ class MainWindow:
         self.gen_passwd_btn.grid(row=3, column=2, padx=G_PADX, pady=G_PADY)
         self.add_btn.grid(row=4, column=1, columnspan=2, padx=G_PADX, pady=G_PADY)
 
-        self.data = Data()
-
     def add_btn_clicked(self):
         website = self.website_entry.get()
         email = self.email_entry.get()
@@ -89,10 +87,14 @@ class MainWindow:
         if not is_ok:
             return
 
-        self.website_entry.delete(0, tk.END)
-        self.password_entry.delete(0, tk.END)
-        self.data.add_data(website, email, passwd)
-        self.data.write_in_file()
+        try:
+            write_data_in_file(website, email, passwd)
+        except IOError:
+            messagebox.showerror(title="Error", message="Cannot write data to file, please try again")
+        finally:
+            self.website_entry.delete(0, tk.END)
+            self.password_entry.delete(0, tk.END)
+
 
     def gen_passwd_btn_clicked(self):
         self.password_entry.delete(0, tk.END)
