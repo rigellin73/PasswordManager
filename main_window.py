@@ -1,4 +1,5 @@
 import tkinter as tk
+from data import Data
 
 # Window settings
 W_TITLE = "Password Manager"
@@ -24,6 +25,7 @@ L_FONT = ("Arial", 14, "normal")
 
 # Entries settings
 E_WEBSITE_WIDTH = 50
+E_EMAIL_DEFAULT_TEXT = "meow@gmail.com"
 E_EMAIL_WIDTH = E_WEBSITE_WIDTH
 E_PASSWD_WIDTH = 25
 
@@ -49,11 +51,13 @@ class MainWindow:
         self.password_label = tk.Label(text=L_PASSWD_TEXT, font=L_FONT)
 
         self.website_entry = tk.Entry(width=E_WEBSITE_WIDTH)
+        self.website_entry.focus()
         self.email_entry = tk.Entry(width=E_EMAIL_WIDTH)
+        self.email_entry.insert(0, E_EMAIL_DEFAULT_TEXT)
         self.password_entry = tk.Entry(width=E_PASSWD_WIDTH)
 
         self.gen_passwd_btn = tk.Button(text=B_GEN_PASSWD_TEXT, font=B_FONT)
-        self.add_btn = tk.Button(text=B_ADD, width=B_ADD_WIDTH, font=B_FONT)
+        self.add_btn = tk.Button(text=B_ADD, width=B_ADD_WIDTH, font=B_FONT, command=self.add_btn_clicked)
 
         self.canvas.grid(row=0, column=1, padx=G_PADX, pady=G_PADY)
         self.website_label.grid(row=1, column=0, padx=G_PADX, pady=G_PADY)
@@ -64,3 +68,19 @@ class MainWindow:
         self.password_entry.grid(row=3, column=1, padx=G_PADX, pady=G_PADY)
         self.gen_passwd_btn.grid(row=3, column=2, padx=G_PADX, pady=G_PADY)
         self.add_btn.grid(row=4, column=1, columnspan=2, padx=G_PADX, pady=G_PADY)
+
+        self.data = Data()
+
+    def add_btn_clicked(self):
+        website = self.website_entry.get()
+        email = self.email_entry.get()
+        passwd = self.password_entry.get()
+
+        if not (website and email and passwd):
+            print("Empty entries")
+            return
+
+        self.website_entry.delete(0, tk.END)
+        self.password_entry.delete(0, tk.END)
+        self.data.add_data(website, email, passwd)
+        self.data.write_in_file()
