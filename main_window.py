@@ -27,14 +27,16 @@ L_PASSWD_TEXT = "Password:"
 L_FONT = ("Arial", 14, "normal")
 
 # Entries settings
-E_WEBSITE_WIDTH = 50
+E_WEBSITE_WIDTH = 25
 E_EMAIL_DEFAULT_TEXT = "meow@gmail.com"
-E_EMAIL_WIDTH = E_WEBSITE_WIDTH
+E_EMAIL_WIDTH = 50
 E_PASSWD_WIDTH = 25
 
 # Buttons settings
+B_SEARCH_TEXT = "Search"
+B_SEARCH_WIDTH = 16
 B_GEN_PASSWD_TEXT = "Generate Password"
-B_ADD = "Add"
+B_ADD_TEXT = "Add"
 B_ADD_WIDTH = 36
 B_FONT = ("Arial", 14, "normal")
 
@@ -59,16 +61,18 @@ class MainWindow:
         self.email_entry.insert(0, E_EMAIL_DEFAULT_TEXT)
         self.password_entry = tk.Entry(width=E_PASSWD_WIDTH)
 
+        self.search_btn = tk.Button(text=B_SEARCH_TEXT, font=B_FONT, command=self.search_btn_clicked, width=B_SEARCH_WIDTH)
         self.gen_passwd_btn = tk.Button(text=B_GEN_PASSWD_TEXT, font=B_FONT, command=self.gen_passwd_btn_clicked)
-        self.add_btn = tk.Button(text=B_ADD, width=B_ADD_WIDTH, font=B_FONT, command=self.add_btn_clicked)
+        self.add_btn = tk.Button(text=B_ADD_TEXT, width=B_ADD_WIDTH, font=B_FONT, command=self.add_btn_clicked)
 
         self.canvas.grid(row=0, column=1, padx=G_PADX, pady=G_PADY)
         self.website_label.grid(row=1, column=0, padx=G_PADX, pady=G_PADY)
         self.email_label.grid(row=2, column=0, padx=G_PADX, pady=G_PADY)
         self.password_label.grid(row=3, column=0, padx=G_PADX, pady=G_PADY)
-        self.website_entry.grid(row=1, column=1, columnspan=2, padx=G_PADX, pady=G_PADY)
+        self.website_entry.grid(row=1, column=1, padx=G_PADX, pady=G_PADY)
         self.email_entry.grid(row=2, column=1, columnspan=2, padx=G_PADX, pady=G_PADY)
         self.password_entry.grid(row=3, column=1, padx=G_PADX, pady=G_PADY)
+        self.search_btn.grid(row=1, column=2, padx=G_PADX, pady=G_PADY)
         self.gen_passwd_btn.grid(row=3, column=2, padx=G_PADX, pady=G_PADY)
         self.add_btn.grid(row=4, column=1, columnspan=2, padx=G_PADX, pady=G_PADY)
 
@@ -97,3 +101,6 @@ class MainWindow:
         passwd = generate_password()
         self.password_entry.insert(0, passwd)
         pyperclip.copy(passwd)
+
+    def search_btn_clicked(self):
+        print("Search button clicked")
