@@ -1,5 +1,8 @@
 import json
 
+D_EMAIL_KEY = "email"
+D_PASSWD_KEY = "password"
+
 FILENAME = "data.json"
 
 def write_data_in_file(new_data):
@@ -16,11 +19,18 @@ def read_data_from_file():
 def update_data_in_file(website, email, password):
     new_data = {
         website: {
-            "email": email,
-            "password": password
+            D_EMAIL_KEY: email,
+            D_PASSWD_KEY: password
         }
     }
 
     data = read_data_from_file()
     data.update(new_data)
     write_data_in_file(data)
+
+def search_data_in_file(keyword):
+    data = read_data_from_file()
+    try:
+        return data[keyword]
+    except KeyError:
+        return {}

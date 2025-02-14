@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import pyperclip
-from data import update_data_in_file
+from data import update_data_in_file, search_data_in_file, D_EMAIL_KEY, D_PASSWD_KEY
 from password_generator import generate_password
 
 # Window settings
@@ -103,4 +103,20 @@ class MainWindow:
         pyperclip.copy(passwd)
 
     def search_btn_clicked(self):
-        print("Search button clicked")
+        website = self.website_entry.get()
+        if not website:
+            messagebox.showinfo(title="Oops", message="Website field is empty")
+            return
+
+        data = search_data_in_file(website)
+        if not data:
+            messagebox.showinfo(title=f"{website}", message=f"{website} not found")
+            return
+
+        message = ""
+        try:
+            message = f"{D_EMAIL_KEY.title()}: {data[D_EMAIL_KEY]}\n{D_PASSWD_KEY.title()}: {data[D_PASSWD_KEY]}"
+        except KeyError:
+            message = "Data file is corrupted"
+        finally:
+            messagebox.showinfo(title=f"{website}", message=message)
